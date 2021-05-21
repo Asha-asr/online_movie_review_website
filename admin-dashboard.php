@@ -1,13 +1,13 @@
 <?php
-
+ session_start();
  include_once "header.php";
 
  include_once "dbconnect.php";
 
  require 'all-movies.php';
 
- include "session-check.php"
-
+ include "session-check.php";
+ 
 
 ?>
 
@@ -80,7 +80,7 @@
                             }
                         
 
-                            $sql = "SELECT movies.Id, movies.movie_title, movies.movie_year, movies.movie_image , genres.genre_name AS movie_genre, movies.movie_director, movies.movie_description FROM movies INNER JOIN genres ON movies.movie_genre=genres.genre_name LIMIT $offset, $limit";
+                            $sql = "SELECT movies.Id, movies.movie_title, movies.movie_year, movies.movie_image , genres.genre_name AS movie_genre, movies.movie_director, movies.movie_description FROM movies INNER JOIN genres ON movies.movie_genre=genres.genre_id LIMIT $offset, $limit";
                             
                             $query = $conn->prepare($sql);
                             
@@ -92,7 +92,7 @@
                             }
                             // count total number of rows in movies table
                             
-                            $count_query = "SELECT movies.Id, movies.movie_title, movies.movie_year, movies.movie_image , genres.genre_name AS movie_genre, movies.movie_director, movies.movie_description FROM movies INNER JOIN genres ON movies.movie_genre=genres.genre_name";
+                            $count_query = "SELECT movies.Id, movies.movie_title, movies.movie_year, movies.movie_image , genres.genre_name AS movie_genre, movies.movie_director, movies.movie_description FROM movies INNER JOIN genres ON movies.movie_genre=genres.genre_id";
                             
                             $query = $conn->prepare($count_query);
                             

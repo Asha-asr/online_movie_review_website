@@ -3,11 +3,13 @@
 <body>
 
         <?php
+    session_start();
     include "header.php";
     include_once "dbconnect.php";
     include "all-movies.php";
+ ?>
 
-    if($_SESSION["user"] = "admin") {?>
+    <?php if($_SESSION["user"] == "admin") {?>
         <div class="container-fluid mx-auto my-5" style="width: 50%;">
         <a href="admin-dashboard.php" class="btn btn-primary btn-lg active" role="button" aria-disabled="true"> Admin Dashboard</a>
         <a href="add-movie.php" class="btn btn-primary btn-lg active" role="button" aria-disabled="true"> Add New Movie</a>
@@ -16,10 +18,30 @@
         </div>
 
     <?php } ?>
+        
     <?php
     $objviewMovies = new viewMovies();
     $movie = $objviewMovies->getAllmovies();
     $conn = $objviewMovies->getConnection();
+    
+    $limit = 5;
+    $page = isset($_GET['page']) ? $_GET['page'] : 1;
+    $start = ($page - 1) * $limit;
+    $browse_sql = "SELECT movies.Id, movies.movie_title, movies.movie_year, movies.movie_image , genres.genre_name AS movie_genre, movies.movie_director, movies.movie_description FROM movies INNER JOIN genres ON movies.movie_genre=genres.genre_id LIMIT $start,$limit";
+    $browse_statement = $conn->prepare($browse_sql);
+	$browse_statement->execute();
+	$movie = $browse_statement->fetchAll(PDO::FETCH_ASSOC);
+
+    $count_query = "SELECT COUNT(Id) AS Id FROM movies";
+    $count_statement = $conn->prepare($count_query);
+    $count_statement->execute();
+    $movie_count = $count_statement ->fetchAll(PDO::FETCH_ASSOC);
+    $total = $movie_count[0]['Id'];
+    $pages = ceil($total/$limit);
+    $previous = $page - 1;
+    $next = $page + 1;
+
+
    ?>
     
             <div class="container mx-auto mt-5">
@@ -27,6 +49,19 @@
                         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name = "search">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit" name="submit">Search</button>
                     </form>
+                    <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end">
+                        <li class="page-item disabled">
+                        <a class="page-link" href="browse-movie.php?page=<?php echo $previous;?>" tabindex="-1">Previous</a>
+                        </li>
+                        <?php for($i = 1; $i<= $pages; $i++){?>
+                        <li class="page-item <?php ($i == $page ? print 'active' : '')?>"><a class="page-link" href="browse-movie.php?page=<?php echo $i;?>"><?php echo $i;?></a></li>
+                        <?php } ?>
+                        <li class="page-item">
+                        <a class="page-link" href="browse-movie.php?page=<?php echo $next;?>">Next</a>
+                        </li>
+                    </ul>
+                    </nav>
             </div>
         
 

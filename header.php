@@ -51,7 +51,7 @@ if (session_status() == PHP_SESSION_NONE) {
       
      
       <li class="nav-item">
-        <a class="nav-link" href="view-movie.php">ALL MOVIES</a>
+        <a class="nav-link" href="browse-movie.php">ALL MOVIES</a>
       </li>
 
       <li class="nav-item">

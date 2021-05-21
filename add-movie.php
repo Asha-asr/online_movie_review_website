@@ -61,21 +61,19 @@ class genreMovies{
                   <?php
                   $objgenreMovies = new genreMovies();
                   $conn = $objgenreMovies->getConnection();
-                  $sql = "SELECT * FROM genres";
+                  $sql = "SELECT genre_id, genre_name FROM genres";
                   $statement = $conn->prepare($sql);
                   $statement->execute();
-                  $genre_selection = $statement->fetchAll(PDO::FETCH_OBJ);
+                  // $genre_selection = $statement->fetchAll();
+                  
                   ?>
             <label for="inputAddress2">Select Movie Genre</label>
             <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="movieGenre">
                 <option selected>Choose Movie Genre...</option>
                 <?php
-                $genre_array = (array)$genre_selection;
-                foreach($genre_array as $options){
-                  $genre = $options->genre_name;
-                  $genre_no = $options->genre_id;
+                while ($row = $statement->fetch()){
                 ?>
-                <option value="$genre"><?php echo $genre;?></option>
+                <option value="<?php echo $row['genre_id']?>"><?php echo $row['genre_name'];?></option>
                 <?php } ?>
               </select>
           </div>

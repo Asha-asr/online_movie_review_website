@@ -26,7 +26,7 @@
                                   $this->movie_id = $_GET['id'];
                                   return $this->movie_id;
                               }
-                              
+                                                    
                       }
 
                                   public function movieInfo(){
@@ -133,16 +133,17 @@
                  
         <option selected>Choose...</option>
         <?php
-        $sql = "SELECT * FROM genres";
+        $sql = "SELECT genre_id, genre_name FROM genres";
         $statement = $conn->prepare($sql);
         $statement->execute();
-        $genre_selection = $statement->fetchAll(PDO::FETCH_OBJ);
-        $genre_array = (array)$genre_selection;
-        foreach($genre_array as $options){
-          $genre_movie = $options->genre_name;
-          $genre_no = $options->genre_id;           
+        // $genre_selection = $statement->fetchAll(PDO::FETCH_OBJ);
+        // $genre_array = (array)$genre_selection;
+        // foreach($genre_array as $options){
+          // $genre_movie = $options->genre_name;
+           while ($row = $statement->fetch()){
+                       
                 ?>
-        <option value="<?php echo $genre_movie?>" <?php if($genre_movie == $genre){echo "selected";}?>><?php echo $genre_movie;?></option>
+        <option value="<?php echo $row['genre_id']?>" <?php if($genre_movie == $genre){echo "selected";}?>><?php echo $row['genre_name'];?></option>
         <?php } ?>        
        
       </select>

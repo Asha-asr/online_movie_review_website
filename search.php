@@ -23,11 +23,27 @@ $conn = $objsearchMovies->getConnection();
 if(isset($_POST['submit'])){
     
     $search_string = $_POST['search'];
-    $sql = "SELECT * FROM movies WHERE movie_genre = :search";
-    $stmt = $conn->prepare($sql);
+    $genre_sql = "SELECT genres.genre_id FROM genres WHERE genres.genre_name = :search";
+    $stmt = $conn->prepare($genre_sql);
     $stmt->execute([':search' => $search_string]);
     $search_info = $stmt->fetchAll(PDO::FETCH_OBJ);
-    // echo "<pre>"; print_r($search_info);
+    $new_genre = array();
+    foreach ($search_info as $item) {
+    foreach ($item as $key => $genre_info) {
+        $new_genre[$key] = $genre_info;
+        
+    } 
+
+    }
+    // $genre_value = array_values($search_info);
+    // $genre_info = $genre_value[0];
+
+    // echo "<pre>"; print_r(array_values($search_info));
+
+    $genre_search = "SELECT movies.Id, movies.movie_title, movies.movie_year, movies.movie_image , genres.genre_name AS movie_genre, movies.movie_director, movies.movie_description FROM movies INNER JOIN genres ON movies.movie_genre = genres.genre_id WHERE movies.movie_genre = :searchinfo";
+    $statement = $conn->prepare($genre_search);
+    $statement->execute([':searchinfo' => $genre_info]);
+    $genre_data = $statement->fetchAll(PDO::FETCH_OBJ);
    }
 
 
@@ -61,7 +77,7 @@ if(isset($_POST['submit'])){
                               <tbody>
                               <?php
                                 $count = 1;
-                                $search_array = (array)$search_info;
+                                $search_array = (array)$genre_data;
 							  foreach($search_array as $search_data){
                                 $id = $search_data->Id;
                                 $name = $search_data->movie_title;

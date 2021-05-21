@@ -37,7 +37,7 @@
 		  }
 
 		public function getAllmovies() {
-			$sql  = "SELECT movies.Id, movies.movie_title, movies.movie_year, movies.movie_image , genres.genre_name AS movie_genre, movies.movie_director, movies.movie_description FROM movies INNER JOIN genres ON movies.movie_genre=genres.genre_name;";
+			$sql  = "SELECT movies.Id, movies.movie_title, movies.movie_year, movies.movie_image , genres.genre_name AS movie_genre, movies.movie_director, movies.movie_description FROM movies INNER JOIN genres ON movies.movie_genre=genres.genre_id;";
 			$stmt = $this->dbConn->prepare($sql);
 			$stmt->execute();
 			$all_movies = $stmt->fetchAll(PDO::FETCH_ASSOC);

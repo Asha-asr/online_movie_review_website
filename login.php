@@ -33,12 +33,13 @@ session_start();
                                             $_SESSION["user"] = $user;
                                             if ($users['type'] == 1){
                                                 header("Location:admin-dashboard.php");
+                                                
                                                 }
                                                 elseif ($users['type']==2){
-                                                    header("Location:view-movie.php");
+                                                    header("Location:browse-movie.php");
                                                  }
                                                  elseif($users['type']==3){
-                                                    header("Location:view-movie.php");
+                                                    header("Location:browse-movie.php");
                                                   }
                                         
                                         else{

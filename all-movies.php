@@ -27,30 +27,47 @@
 		function getmovie_description() { return $this->movie_description; }*/
         
 		public function __construct() {
-            require_once ('dbconnect.php');
-            $db = new DbConnect();
+            
+			require_once ('dbconnect.php');
+            
+			$db = new DbConnect();
+			
 			$this->dbConn = $db->connect() ;
 		}
 
 		public function getConnection(){
+			
 			return $this->dbConn; 
-		  }
+		  
+		}
 
 		public function getAllmovies() {
-			$sql  = "SELECT movies.Id, movies.movie_title, movies.movie_year, movies.movie_image , genres.genre_name AS movie_genre, movies.movie_director, movies.movie_description FROM movies INNER JOIN genres ON movies.movie_genre=genres.genre_id;";
+			
+			$sql  = "SELECT movies.Id, movies.movie_title, movies.movie_year, movies.movie_image , genres.genre_name AS movie_genre, movies.movie_director, movies.movie_description FROM movies INNER JOIN genres ON movies.movie_genre=genres.id;";
+			
 			$stmt = $this->dbConn->prepare($sql);
+			
 			$stmt->execute();
+			
 			$all_movies = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			
 			return $all_movies;	
 		}
 
 		public function moviesCount(){
+			
 			$sql  = "SELECT count(Id) As Id FROM movies";
+			
 			$stmt = $this->dbConn->prepare($sql);
+			
 			$stmt->execute();
+			
 			$movie_count = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			
 			$total_movie = $movie_count[0]['Id'];
+			
 			$page_count = ceil($total_movie/ 10);
+			
 			return $page_count;
 		}
 

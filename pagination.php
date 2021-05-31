@@ -8,7 +8,10 @@ include "session-check.php";
 
 
 
-                            
+                            $objviewMovies = new viewMovies();
+                            $conn = $objviewMovies->getConnection();
+							              $movie = $objviewMovies->getAllmovies();
+                            $movie_count = $objviewMovies->moviesCount();
 
                             $limit = 5;
                             $adjacents = 2;

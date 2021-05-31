@@ -59,6 +59,12 @@ if(isset($_POST['delete'])) {
     header("Location:admin-dashboard.php");
 }
 
+if (empty($movie_array)){
+  echo "Id not found.";
+  header("Location:error.php"); 
+  exit();
+}
+
 
 ?>
 

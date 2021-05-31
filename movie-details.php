@@ -52,6 +52,12 @@
     $description = $object->movie_description;
     } 
 
+    if (empty($movie_array)){
+        echo "Id not found.";
+        header("Location:error.php"); 
+        exit();
+      }
+        
     // Below function will convert datetime to time elapsed string.
        function time_elapsed_string($datetime, $full = false) {
                         $now = new DateTime;

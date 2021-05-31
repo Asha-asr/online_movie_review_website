@@ -61,7 +61,7 @@ class genreMovies{
                   <?php
                   $objgenreMovies = new genreMovies();
                   $conn = $objgenreMovies->getConnection();
-                  $sql = "SELECT genre_id, genre_name FROM genres";
+                  $sql = "SELECT id, genre_name FROM genres";
                   $statement = $conn->prepare($sql);
                   $statement->execute();
                   // $genre_selection = $statement->fetchAll();
@@ -73,7 +73,7 @@ class genreMovies{
                 <?php
                 while ($row = $statement->fetch()){
                 ?>
-                <option value="<?php echo $row['genre_id']?>"><?php echo $row['genre_name'];?></option>
+                <option value="<?php echo $row['id']?>"><?php echo $row['genre_name'];?></option>
                 <?php } ?>
               </select>
           </div>

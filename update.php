@@ -35,6 +35,7 @@
                                   $stmt->execute([':Id' => $this->movie_id]);
                                   $movie_info = $stmt->fetchAll(PDO::FETCH_OBJ);
                                   return $movie_info;
+                                  
                               }
                             
  
@@ -44,8 +45,11 @@
                 $conn = $objupdateMovies->getConnection();
                 $get_movie = $objupdateMovies->getMovies();
                 $movie = $objupdateMovies->movieInfo();
+                
                 $movie_array = (array) $movie;
                 //  echo "<pre>"; print_r($movie_array);
+               
+                
                 foreach($movie_array as $object){
                   $id = $object->Id;
                   $name = $object->movie_title;
@@ -57,7 +61,8 @@
                 } 
                           
                           if(isset($_POST['submit'])){
-                                  
+
+                                                             
                                   $movie_title = $_POST['movieName'];
                                   $release_year = $_POST['movieYear'];
                                   $movie_poster = $_FILES["moviePoster"]["name"];
@@ -70,6 +75,8 @@
                                   $poster_type = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
                                   $movie_file = $movie_title.".".$poster_type;
                                   $poster_name = $target_dir . $movie_file;
+
+                                  
   
                               if(empty($movie_title) || empty($release_year) || empty($movie_poster) || empty($movie_genre) || empty($movie_director) || empty($movie_details)){
                                   echo "Please provide all the details";
@@ -84,6 +91,12 @@
                                             header("Location:admin-dashboard.php");
                               
                               }
+                        }
+
+                        if (empty($movie_array)){
+                          echo "Id not found.";
+                          header("Location:error.php"); 
+                          exit();
                         }
 
                         $update_url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
@@ -121,9 +134,9 @@
   <div class="form-group">
     <label for="inputAddress">Movie Poster</label>
     <div class="custom-file">
-    <input type="file" class="custom-file-input" id="validatedCustomFile" value = "<?php echo $image?>" name = "moviePoster" required>
+    <input type="file" class="custom-file-input" id="validatedCustomFile" value = "<?php echo $image;?>" name = "moviePoster" required>
     <!-- <input type="text" class="form-control" id="inputPassword4" placeholder="Movie Short Name" name="movieShort"> -->
-    <label class="custom-file-label" for="validatedCustomFile"><?php echo $image?></label>
+    <label class="custom-file-label" for="validatedCustomFile"><?php echo $image;?></label>
     <div class="invalid-feedback">Example invalid custom file feedback</div>
   </div>
   </div>
@@ -143,7 +156,7 @@
            while ($row = $statement->fetch()){
                        
                 ?>
-        <option value="<?php echo $row['genre_id']?>" <?php if($genre_movie == $genre){echo "selected";}?>><?php echo $row['genre_name'];?></option>
+        <option value="<?php echo $row['genre_id']?>" <?php if($row['genre_name'] == $genre){echo "selected";}?>><?php echo $row['genre_name'];?></option>
         <?php } ?>        
        
       </select>
